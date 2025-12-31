@@ -1,40 +1,43 @@
 import { motion } from "framer-motion";
 import { Wallet, TrendingUp, ArrowUpRight, ArrowDownRight, Sparkles } from "lucide-react";
+import { TokenChip, TokenRow } from "@coinbase/onchainkit/token";
+import type { Token } from "@coinbase/onchainkit/token";
 import { cn } from "@/lib/utils";
 
-interface TokenData {
-  symbol: string;
-  name: string;
-  balance: string;
-  value: string;
-  change: number;
-  icon: string;
-}
-
-const tokens: TokenData[] = [
+// Base network tokens with real addresses
+const tokens: (Token & { balance: string; value: string; change: number })[] = [
   {
-    symbol: "ETH",
+    address: "",
+    chainId: 8453,
+    decimals: 18,
+    image: "https://dynamic-assets.coinbase.com/dbb4b4983bde81309ddab83eb598358eb44375b930b94687ebe38bc22e52c3b2125258ffb8477a5ef22e33d6bd72e32a506c391caa13af64c00e46613c3e5806/asset_icons/4113b082d21cc5fab17fc8f2d19fb996165bcce635e6900f7fc2d57c4ef33ae9.png",
     name: "Ethereum",
+    symbol: "ETH",
     balance: "2.4521",
     value: "$8,245.67",
     change: 3.24,
-    icon: "⟠",
   },
   {
-    symbol: "USDC",
+    address: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    chainId: 8453,
+    decimals: 6,
+    image: "https://dynamic-assets.coinbase.com/3c15df5e2ac7d4abbe9499ed9335041f00c620f28e8de2f93474a9f432058742cdf4674bd43f309e69778a26969372310135be97eb183d91c492154176d455b8/asset_icons/9d67b728b6c8f457717154b3a35f9ddc702eae7e76c4684ee39302c4d7fd0bb8.png",
     name: "USD Coin",
+    symbol: "USDC",
     balance: "5,432.00",
     value: "$5,432.00",
     change: 0.01,
-    icon: "◉",
   },
   {
-    symbol: "WETH",
+    address: "0x4200000000000000000000000000000000000006",
+    chainId: 8453,
+    decimals: 18,
+    image: "https://dynamic-assets.coinbase.com/dbb4b4983bde81309ddab83eb598358eb44375b930b94687ebe38bc22e52c3b2125258ffb8477a5ef22e33d6bd72e32a506c391caa13af64c00e46613c3e5806/asset_icons/4113b082d21cc5fab17fc8f2d19fb996165bcce635e6900f7fc2d57c4ef33ae9.png",
     name: "Wrapped ETH",
+    symbol: "WETH",
     balance: "0.8912",
     value: "$2,998.45",
     change: 3.18,
-    icon: "⟠",
   },
 ];
 
@@ -97,6 +100,18 @@ export function PortfolioTracker() {
         </div>
       </motion.div>
 
+      {/* Token Chips - OnchainKit Component */}
+      <motion.div variants={itemVariants} className="flex flex-wrap gap-2">
+        {tokens.map((token) => (
+          <TokenChip
+            key={token.symbol}
+            token={token}
+            isPressable={false}
+            className="!bg-secondary/80 !shadow-none"
+          />
+        ))}
+      </motion.div>
+
       {/* Quick Stats */}
       <motion.div variants={itemVariants} className="grid grid-cols-3 gap-3">
         <div className="glass rounded-xl p-4 text-center">
@@ -116,7 +131,7 @@ export function PortfolioTracker() {
         </div>
       </motion.div>
 
-      {/* Token List */}
+      {/* Token List - OnchainKit TokenRow */}
       <motion.div variants={itemVariants} className="space-y-3">
         <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
           Assets
@@ -128,23 +143,18 @@ export function PortfolioTracker() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 + index * 0.1 }}
-              className="glass rounded-xl p-4 flex items-center justify-between hover:bg-secondary/60 transition-all duration-200 cursor-pointer group"
+              className="glass rounded-xl overflow-hidden"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                  {token.icon}
-                </div>
-                <div>
-                  <p className="font-semibold">{token.symbol}</p>
-                  <p className="text-xs text-muted-foreground">{token.name}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="font-semibold">{token.value}</p>
-                <div className="flex items-center justify-end gap-1">
-                  <span className="text-xs text-muted-foreground">
-                    {token.balance} {token.symbol}
-                  </span>
+              <div className="flex items-center justify-between p-4 hover:bg-secondary/60 transition-all duration-200 cursor-pointer group">
+                <TokenRow
+                  token={token}
+                  amount={token.balance}
+                  hideSymbol
+                  as="div"
+                  className="!p-0 flex-1"
+                />
+                <div className="text-right ml-4">
+                  <p className="font-semibold">{token.value}</p>
                   <span className={cn(
                     "text-xs font-medium",
                     token.change >= 0 ? "text-success" : "text-destructive"
