@@ -7,9 +7,12 @@ import { PortfolioTracker } from "@/components/PortfolioTracker";
 import { AIChatInterface } from "@/components/AIChatInterface";
 import { SwapInterface } from "@/components/SwapInterface";
 import { ContractDeployer } from "@/components/ContractDeployer";
+import { Onboarding } from "@/components/Onboarding";
+import { useOnboarding } from "@/hooks/useOnboarding";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const { showOnboarding, isLoading, completeOnboarding } = useOnboarding();
 
   const renderContent = () => {
     switch (activeTab) {
@@ -35,6 +38,22 @@ const Index = () => {
         return <PortfolioTracker />;
     }
   };
+
+  // Show loading state while checking onboarding status
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center animate-pulse">
+          <Zap className="h-6 w-6 text-primary-foreground" />
+        </div>
+      </div>
+    );
+  }
+
+  // Show onboarding for first-time users
+  if (showOnboarding) {
+    return <Onboarding onComplete={completeOnboarding} />;
+  }
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
