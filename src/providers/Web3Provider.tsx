@@ -16,6 +16,7 @@ export function Web3Provider({ children }: Web3ProviderProps) {
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <OnchainKitProvider
+          apiKey={import.meta.env.VITE_ONCHAINKIT_API_KEY}
           chain={base}
           config={{
             appearance: {
