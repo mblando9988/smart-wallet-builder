@@ -6,18 +6,18 @@ import { coinbaseWallet, injected } from "wagmi/connectors";
 const isDevelopment = import.meta.env.DEV;
 
 export const wagmiConfig = createConfig({
-  chains: isDevelopment ? [baseSepolia, base] : [base, baseSepolia],
+  chains: [base, baseSepolia],
   connectors: [
+    injected(),
     coinbaseWallet({
       appName: "BaseMini App",
-      preference: "smartWalletOnly", // Enables Smart Wallet for gasless transactions
     }),
-    injected(),
   ],
   transports: {
     [base.id]: http(),
     [baseSepolia.id]: http(),
   },
+  ssr: false,
 });
 
 export { base, baseSepolia };
