@@ -1,1 +1,13 @@
 project_id = "xfjddfemjvmoyoaqlzso"
+
+[functions.agent-chat]
+verify_jwt = false
+
+[functions.create-agent-wallet]
+verify_jwt = false
+
+[functions.store-spend-permission]
+verify_jwt = false
+
+[functions.check-spend-permission]
+verify_jwt = false
