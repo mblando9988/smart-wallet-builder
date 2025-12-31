@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agent_chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          tool_calls: Json | null
+          user_address: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          tool_calls?: Json | null
+          user_address: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          tool_calls?: Json | null
+          user_address?: string
+        }
+        Relationships: []
+      }
+      agent_wallets: {
+        Row: {
+          created_at: string
+          id: string
+          smart_account_address: string
+          wallet_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          smart_account_address: string
+          wallet_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          smart_account_address?: string
+          wallet_id?: string
+        }
+        Relationships: []
+      }
+      spend_permissions: {
+        Row: {
+          allowance_usdc: number
+          chain_id: number
+          created_at: string
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          period_days: number
+          permission_data: Json | null
+          spender_address: string
+          token_address: string
+          updated_at: string
+          user_address: string
+        }
+        Insert: {
+          allowance_usdc: number
+          chain_id?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          period_days?: number
+          permission_data?: Json | null
+          spender_address: string
+          token_address: string
+          updated_at?: string
+          user_address: string
+        }
+        Update: {
+          allowance_usdc?: number
+          chain_id?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          period_days?: number
+          permission_data?: Json | null
+          spender_address?: string
+          token_address?: string
+          updated_at?: string
+          user_address?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
