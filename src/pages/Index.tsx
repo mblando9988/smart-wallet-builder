@@ -26,7 +26,7 @@ const Index = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center justify-center h-full"
+            className="flex items-center justify-center h-64"
           >
             <p className="text-muted-foreground">Settings coming soon...</p>
           </motion.div>
@@ -37,52 +37,43 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col md:flex-row">
-      {/* Navigation */}
-      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col pb-20 md:pb-0">
-        {/* Header */}
-        <header className="flex items-center justify-between p-4 border-b border-border">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center md:hidden">
-              <Zap className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="font-bold text-lg">Base AI Agent</h1>
-              <p className="text-xs text-muted-foreground">
-                Your Web3 Assistant on Base
-              </p>
-            </div>
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Header - Compact for mobile per Base guidelines */}
+      <header className="sticky top-0 z-40 flex items-center justify-between px-4 py-3 border-b border-border bg-background/95 backdrop-blur-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
+            <Zap className="h-5 w-5 text-primary-foreground" />
           </div>
-          <WalletConnect />
-        </header>
-
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="container max-w-2xl mx-auto p-4">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-                className={activeTab === "chat" ? "h-[calc(100vh-180px)] md:h-[calc(100vh-120px)]" : ""}
-              >
-                {renderContent()}
-              </motion.div>
-            </AnimatePresence>
+          <div>
+            <h1 className="font-bold text-base leading-tight">Base AI Agent</h1>
+            <p className="text-xs text-muted-foreground leading-tight">
+              Your Web3 Assistant
+            </p>
           </div>
+        </div>
+        <WalletConnect />
+      </header>
+
+      {/* Main Content Area - Mobile optimized with safe area padding */}
+      <main className="flex-1 overflow-y-auto pb-20">
+        <div className="container max-w-lg mx-auto px-4 py-4">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.15 }}
+              className={activeTab === "chat" ? "h-[calc(100vh-180px)]" : ""}
+            >
+              {renderContent()}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </main>
 
-      {/* Decorative Background Elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-        <div className="absolute top-1/4 -left-32 w-64 h-64 bg-primary/20 rounded-full blur-[100px]" />
-        <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-accent/20 rounded-full blur-[100px]" />
-      </div>
+      {/* Bottom Navigation - Per Base mini-app guidelines */}
+      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
     </div>
   );
 };

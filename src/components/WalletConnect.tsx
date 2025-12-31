@@ -55,8 +55,9 @@ export function WalletConnect({ className }: WalletConnectProps) {
           <Button
             key={connector.uid}
             onClick={() => connect({ connector })}
-            variant="gradient"
-            className="gap-2"
+            variant="default"
+            size="default"
+            className="gap-2 min-h-[44px]"
             disabled={isPending}
           >
             {isPending ? (
@@ -64,7 +65,7 @@ export function WalletConnect({ className }: WalletConnectProps) {
             ) : (
               <Wallet className="h-4 w-4" />
             )}
-            {connector.name === "Coinbase Wallet" ? "Smart Wallet" : connector.name}
+            {connector.name === "Coinbase Wallet" ? "Connect" : connector.name}
           </Button>
         ))}
       </div>
@@ -114,28 +115,30 @@ export function WalletConnect({ className }: WalletConnectProps) {
                 </div>
               )}
               
-              {/* Address */}
-              <div className="flex items-center gap-2 p-2 rounded-lg bg-secondary">
+              {/* Address - Avoid showing full 0x per Base guidelines */}
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-secondary">
                 <span className="font-mono text-xs text-muted-foreground truncate flex-1">
-                  {address}
+                  {truncatedAddress}
                 </span>
                 <button
                   onClick={handleCopy}
-                  className="p-1 hover:bg-muted rounded transition-colors"
+                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center active:bg-muted rounded-lg transition-colors"
+                  aria-label="Copy address"
                 >
                   {copied ? (
-                    <Check className="h-3.5 w-3.5 text-success" />
+                    <Check className="h-4 w-4 text-success" />
                   ) : (
-                    <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                    <Copy className="h-4 w-4 text-muted-foreground" />
                   )}
                 </button>
                 <a
                   href={getExplorerUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1 hover:bg-muted rounded transition-colors"
+                  className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center active:bg-muted rounded-lg transition-colors"
+                  aria-label="View on explorer"
                 >
-                  <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                  <ExternalLink className="h-4 w-4 text-muted-foreground" />
                 </a>
               </div>
 
