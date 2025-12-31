@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap } from "lucide-react";
+import { useAccount } from "wagmi";
 import { Navigation } from "@/components/Navigation";
 import { WalletConnect } from "@/components/WalletConnect";
 import { PortfolioTracker } from "@/components/PortfolioTracker";
@@ -8,11 +9,18 @@ import { AIChatInterface } from "@/components/AIChatInterface";
 import { SwapInterface } from "@/components/SwapInterface";
 import { ContractDeployer } from "@/components/ContractDeployer";
 import { Onboarding } from "@/components/Onboarding";
+import { ChatWithAgentPrompt } from "@/components/ChatWithAgentPrompt";
 import { useOnboarding } from "@/hooks/useOnboarding";
+import { useChatPrompt } from "@/hooks/useChatPrompt";
+
+// Replace with your actual agent address for DM deeplinks
+const AGENT_ADDRESS = "0x5993B8F560E17E438310c76BCac1Af3E6DA2A58A";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const { showOnboarding, isLoading, completeOnboarding } = useOnboarding();
+  const { isConnected } = useAccount();
+  const { showPrompt, dismissPrompt } = useChatPrompt(isConnected);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -90,6 +98,16 @@ const Index = () => {
           </AnimatePresence>
         </div>
       </main>
+
+      {/* Chat with Agent Prompt - Shows after wallet connection */}
+      <AnimatePresence>
+        {showPrompt && (
+          <ChatWithAgentPrompt 
+            agentAddress={AGENT_ADDRESS} 
+            onDismiss={dismissPrompt} 
+          />
+        )}
+      </AnimatePresence>
 
       {/* Bottom Navigation - Per Base mini-app guidelines */}
       <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
