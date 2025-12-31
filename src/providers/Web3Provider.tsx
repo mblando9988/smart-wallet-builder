@@ -15,7 +15,15 @@ export function Web3Provider({ children }: Web3ProviderProps) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider chain={base}>
+        <OnchainKitProvider
+          chain={base}
+          config={{
+            appearance: {
+              mode: "auto",
+              theme: "default",
+            },
+          }}
+        >
           {children}
         </OnchainKitProvider>
       </QueryClientProvider>
